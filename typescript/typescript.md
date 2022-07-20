@@ -1,0 +1,5 @@
+int
+
+```typescript
+int;
+```
