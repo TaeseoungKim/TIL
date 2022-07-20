@@ -68,14 +68,46 @@ developer, QA Engineerm devops Enginner(바리스타 등...)
 
 ---
 
-user
+    user
+    - 보안주체에 대한 리소스 액션을 거부할지, 허락할지 명세한 것
+    - 보안주체 리소스 액션 Allow/Deny 명세한 Json 문서
 
-group
 
-role
+    group
 
-- 사용자 또는 **서비스**에게 임시권한을 주는 방법
+    role
+    - 사용자 또는 **서비스**에게 임시권한을 주는 방법
 
 policy -
 
 ---
+
+VPC - CIDR로 구성된 하나의 네트워크 공간
+
+퍼블릭 서브넷 - 인터넷 연결이 가능한 공간
+프라이빗 서브넷 - 인터넷 연결이 불가능한 공간
+
+CIDR / 22인 VPC는 1024개 IP 주소를 포함한다.
+
+서브넷에 라우팅 테이블은 항상 포함되어 있어야 한다.
+
+기본 Amazon VPC는 계정 생성 시 프로비저닝된다.
+-> 하지만 기본 VPC를 사용하지 않고 따로 VPC를 구성하는 것이 보안적으로 좋다
+
+NAT(Network Address Translate) = private IP => public IP
+
+Local Area Network
+-> private IP만 존재하기 때문에 인터넷과 연결 불가능
+-> 공유기는 Routing table을 가지고 있어 public IP를 가지고 있음
+-> 그래서 공유기를 연결하면 공유기의 public IP를 가지고 인터넷 사용 가능
+
+단일 VPC는 여러 ~~리전~~AZ에 구성할 수 있다
+
+security group
+lev: ec2
+list: allowlist
+state: stateful
+network ACL
+lev: subnet
+list: blocklist
+state: stateless
