@@ -111,3 +111,5 @@ network ACL
 lev: subnet
 list: blocklist
 state: stateless
+
+아키텍처를 그릴 때, 솔루션이 VPC 밖에 있는지 안에 있는지는 서버리스인지 아닌지로 나뉜다.
