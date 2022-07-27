@@ -416,13 +416,16 @@ class MyMath {
 }
 
 console.log(MyMath.PI); // 3.142857142857143
-console.log(MyMath.increment()); // 11 8. 상속에 의한 클래스 확장
+console.log(MyMath.increment()); // 11
 ```
 
-1. 클래스 상속과 생성자 함수 상속
-   기존 클래스를 상속받아 새로운 클래스를 확장하여 정의
-   클래스와 생성자 함수는 인스턴스를 생성할 수 있는 함수라는 점에서 매우 유사
-   클래스는 상속을 통해 다른 클래스를 확장할 수 있는 문법인 extends 키워드가 기본적으로 제공
+## 상속에 의한 클래스 확장
+
+### 클래스 상속과 생성자 함수 상속
+
+기존 클래스를 상속받아 새로운 클래스를 확장하여 정의
+클래스와 생성자 함수는 인스턴스를 생성할 수 있는 함수라는 점에서 매우 유사
+클래스는 상속을 통해 다른 클래스를 확장할 수 있는 문법인 extends 키워드가 기본적으로 제공
 
 ```javascript
 class Animal {
@@ -458,18 +461,20 @@ console.log(bird.move()); // move
 console.log(bird.fly()); // fly
 ```
 
-2. extends 키워드
-   extends 키워드를 사용하여 상속받은 클래스를 정의
-   서브 클래스(파생 클래스, 자식 클래스): 상속을 통해 확장된 클래스
-   수퍼 클래스(베이스 클래스, 부모 클래스): 서브클래스에게 상속된 클래스
-   // 수퍼(베이스/부모)클래스
-   class Base {}
+### extends 키워드
+
+extends 키워드를 사용하여 상속받은 클래스를 정의
+서브 클래스(파생 클래스, 자식 클래스): 상속을 통해 확장된 클래스
+수퍼 클래스(베이스 클래스, 부모 클래스): 서브클래스에게 상속된 클래스
+// 수퍼(베이스/부모)클래스
+class Base {}
 
 // 서브(파생/자식)클래스
 class Derived extends Base {}
 
-3. 동적 상속
-   extends 키워드를 통해 생성자 함수를 상속 가능
+### 동적 상속
+
+extends 키워드를 통해 생성자 함수를 상속 가능
 
 ```javascript
 // 생성자 함수
@@ -501,8 +506,14 @@ const derived = new Derived();
 console.log(derived); // Derived {}
 
 console.log(derived instanceof Base1); // true
-console.log(derived instanceof Base2); // false 4) 서브 클래스의 constructor
-클래스에서 constructor를 생략하면 암묵적으로 빈 객체가 정의 됨
+console.log(derived instanceof Base2); // false
+```
+
+### 서브 클래스의 constructor
+
+클래스에서 constructor를 생략하면 암묵적으로 빈 객체가 정의된다
+
+```javascript
 // 수퍼클래스
 class Base {
 constructor() {}
@@ -537,7 +548,10 @@ const derived = new Derived(1, 2);
 console.log(derived); // Derived {a: 1, b: 2}
 ```
 
-super()는 수퍼클래스의 constructor를 호출하여 인스턴스를 생성 5) super 키워드
+super()는 수퍼클래스의 constructor를 호출하여 인스턴스를 생성
+
+### super 키워드
+
 함수처럼 호출할 수도 있고, this와 같이 참조할 수 있는 특수한 키워드
 super 호출 -> 수퍼 클래스의 constructor(super-constructor)를 호출
 
@@ -660,13 +674,14 @@ return `${__super.sayHi.call(this)} how are you doing?`;
 super = Object.getPrototypeOf([[HomeObject]])
 ```
 
-6. 상속 클래스의 인스턴스 생성 과정
-   (1) 서브클래스의 super 호출
-   (2) 수퍼클래스의 인스턴스 생성과 this 바인딩
-   (3) 수퍼클래스의 인스턴스 초기화
-   (4) 서브클래스 constructor로의 복귀와 this 바인딩
-   (5) 서브클래스의 인스턴스 초기화
-   (6) 인스턴스 반환
+### 상속 클래스의 인스턴스 생성 과정
+
+(1) 서브클래스의 super 호출
+(2) 수퍼클래스의 인스턴스 생성과 this 바인딩
+(3) 수퍼클래스의 인스턴스 초기화
+(4) 서브클래스 constructor로의 복귀와 this 바인딩
+(5) 서브클래스의 인스턴스 초기화
+(6) 인스턴스 반환
 
 ```javascript
 // 수퍼클래스
