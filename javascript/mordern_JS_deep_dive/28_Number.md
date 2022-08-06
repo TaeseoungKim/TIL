@@ -130,4 +130,4 @@ Number.prototype.toPrecision는 인수로 전달받은 전체 자릿수까지 �
 
 ### Number.prototype.toString
 
-Number.prototype.toString는 숫자를 문자열로 변환하여 반환한다.
+Number.prototype.toString는 숫자를 문자열로 변환하여 반환.
