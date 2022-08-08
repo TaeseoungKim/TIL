@@ -1,3 +1,4 @@
+![](https://i.imgur.com/FenftHu.png)
 본 게시글은 "HTTP 완벽 가이드"를 학습하며, 내용 요약 또는 몰랐던 부분을 정리하는 글 입니다.
 
 # URL과 리소스
