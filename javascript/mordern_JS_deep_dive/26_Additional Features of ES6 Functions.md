@@ -22,7 +22,7 @@ var obj = { foo: foo };
 obj.foo(); // -> 1
 ```
 
-tip) 인스턴스를 생성할 수 있는 함수 객체를 constructor, 인스턴스를 생성할 수 없는 함수 객체를 non-constructor라고 부른다.
+tip) 인스턴스를 생성할 수 있는 함수 객체를 constructor, 인스턴스를 생성할 수 없는 함수 객체를 non-constructor라고 부른다
 
 ```javascript
 // 프로퍼티 f에 바인딩된 함수는 callable이며 constructor다.
