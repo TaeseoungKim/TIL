@@ -76,7 +76,7 @@ ES6 사양에서는 메서드에 대한 정의를 명확하게 규정하였다. 
 ```javascript
 const obj = {
   x: 1,
-  // foo는 메서드이다.
+  // foo는 메서드
   foo() {
     return this.x;
   },
