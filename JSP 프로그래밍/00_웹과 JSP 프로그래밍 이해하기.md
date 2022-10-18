@@ -20,6 +20,8 @@
 
 - 아파치
 - 톰캣 (아파치 재단에서 배포)
+  - 아파치 소프트웨어재단(Apache Software Foundation)에서 개발한 웹 어플리케이션 서버
+  - 자바로 만들어진 웹 페이지를 구동하기 위한 엔진
 - IIS (윈도우에서만 동작)
 
 ### 정적 웹 페이지와 동적 웹 페이지
@@ -33,7 +35,7 @@
 동적 웹 페이지
 
 - 저장된 내용을 다른 변수로 가공 처리하여 보는 것
-- PHP(Personal Home Page), ASP(Active Server Page), JSP
+- PHP(Personal Home Page), ASP(Active Server Page), JSP(Java Server Page)
 - 서버: 사용자 요청에 맞게 정제된 HTML 문서를 전달
   ![](https://i.imgur.com/iMmEeYf.png)
 
