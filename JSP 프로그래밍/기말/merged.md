@@ -77,51 +77,287 @@ close(): Statement 객체를 반환할 때 사용한다.
 정적인 쿼리에 사용되는 Statement와는 다르게 PreparedStatement 객체는 동적인 쿼리에 사용된다.
 PreparedStatement 객체는 하나의 객체로 여러 번의 쿼리를 실행할 수 있고, 동일한 쿼리문을 특정 값만 바꾸어서 여러 번 실행해야 할 때 유용
 
-```java
+**PreparedStatement 객체의 메소드 종류에 대해 서술하시오.**
+PreparedStatement 객체의 메서드도 Statement 객체의 메서드와 같다.
+executeQuery(String sql): ResultSet 객체를 반환하고, SELECT 문을 실행할 때 사용한다.
+executeUpdate(String sql): 삽입, 수정, 삭제에 관련된 SQL문을 실행하는데 사용한다.
+close(): Statement 객체를 반환할 때 사용한다.
 
+예제) executeQuery(String sql) 사용법 - 데이터 조회
+
+```java
+<%
+    Connection conn = null;
+    String sql = "SELECT * FROM Member WHERE id = ?"
+    Statement pstmt = conn.prepareStatement(sql);
+    prstmt.setString(1,"1");
+    ResultSet rs = pstmt.executeQuery(sql)
+    // 생략
+
+%>
+```
+
+예제) executeUpdate() 사용법 - INSERT 쿼리문
+
+```java
+<%
+    Connection conn = null;
+    String sql = "INSERT INTO Member(id, name, passwd) VALUES (?,?,?)";
+    Statement pstmt = conn.prepareStatement(sql);
+    pstmt.setString(1,"1");
+    pstmt.setString(2,"홍길순");
+    pstmt.setString(3,"1234");
+    pstmt.executeUpdate();
+    // 생략
+    pstmt.close
+%>
+```
+
+문제) executeUpdate() 사용법을 서술하시오 - UPDATE, DELETE
+
+```java
+<%
+    Connection conn = null;
+    String sql = "UPDATE Member SET name=? WHERE id=?"
+    PreparedStatement pstmt = conn.prepareStatement(sql);
+    pstmt.setString(1,"1")
+    pstmt.setString(2,"관리자")
+    pstmt.executeUpdate();
+    // 생략
+    pstmt.close();
+%>
 ```
 
 ```java
+<%
+    Connection conn = null;
+    String sql = "DELETE FROM Member WHERE id=?";
+    Statement pstmt = conn.prepareStatement(sql)
+    pstmt.setString(1,"1")
+    pstmt.executeUpdate()
+    // 생략
+    pstmt.close(;)
+%>
+```
+
+## 46 ~ 48인데, 특히 48 아래 쪽 close
+
+**ResultSet 객체란?**
+Statement 또는 PreparedStatement 객체로 SELECT 문을 사용하여 얻어온 레 코드 값을 테이블 형태로 가진 객체
+
+## 52~68 한번 코딩해보기
+
+**web.xml 파일을 이용한 예외 처리 방법을 서술하시오.**
+먼저 web.xml 파일은 /WEB-INF/폴더에 있어야 한다.
+
+web.xml 예시)
+
+```xml
+<error-page>
+<error-code> 오류 코드에 맞는 예외처리 </error-code>
+<exception-type> 자바 예외 유형의 정규화된 클래스 이름 설정 </exception-type>
+<location> 오류 페이지의 URL을 설정하는데 사용합니다. </location>
+</error-page>
+```
+
+**오류 코드에 대해 아는 대로 서술하라.**
+200 - 요청이 정상적으로 처리됩니다.
+307 - 임시로 페이지가 리다이렉트됩니다.
+400 - 클라이언트의 요청이 잘못된 구문으로 구성됩니다.
+401 - 접근이 허용되지 않습니다.
+404 - 지정된 URL을 처리하기 위한 자원이 존재하지 않습니다.
+405 - 요청된 메소드가 허용되지 않습니다.
+500 - 서버 내부의 에러입니다.(JSP에서 예외가 발생하는 경우)
+503 - 서버가 일시적으로 서비스를 제공할 수 없습니다.(서버 과부하나 보수 중인 경우)
+
+web.xml 예시) 에러 코드로 오류 페이지 호출하기
+
+```xml
+<web-app...>
+<error-page>
+<error-code>404</error-code>
+<location>errorCode_404.jsp</location>
+</error-page>
+
+<error-page>
+<error-code>500</error-code>
+<location>errorCode_500.jsp</location>
+</error-page>
+
+<error-page>
+<error-code>503</error-code>
+<location>/ch11/errorCode_503.jsp</location>
+</error-page>
+</web-app...>
+```
+
+web.xml 예시) 에러 타입(유형)으로 오류 페이지 호출하기
+
+```xml
+<error-page>
+<exception-type>java.lang.NullPointerException</exception-type>
+<location>/errorNullPointer.jsp</location>
+</error-page>
+```
+
+**try-catch-finally를 이용한 예외 처리에 대해 설명하시오.**
+
+```java
+try{
+// 예외가 발생할 수 있는 실행문
+}
+catch(){ // 처리할 예외 유형 설정
+// 예외 발생시 처리할 실행문
+}
+finally{
+// 예외와 상관없이 무조건 실행되는 문장(생략 가능)
+}
+```
+
+## 86 한번 보기
+
+**RequestDispatcher 객체에 대해 설명하시오.**
+클라이언트로부터 최초에 들어온 요청을 JSP/Servlet 내에서 원하는 자원으로 요청을 넘기는 역할을 수행하거나, 특정 자원에 처리를 요청하고 처리 결과를 얻어 오는 기능을 수행하는 클래스
+
+**JSP 예외 처리 기법 3가지에 대해 설명하시오.**
+
+1. web.xml 파일을 통한 예외처리
+
+```java
+<error-page>
+<error-code></error-code>|
+<exception-type></exception-type>
+<location></location>
+</error-page>
+```
+
+2. <%@ page errorPage='에러 URL 주소' %> 와 <%@ page isErrorPage='true' %>을 혼합하여 사용한다.
+
+<%@ page errorPage='에러 URL 주소' %>는 작동하는 페이지에,
+<%@ page isErrorPage='true' %>는 오류 페이지에 삽입하여 명시하는 역할
+
+3. try, catch, finally를 사용한다.
+   catch문에 아래와 같이 삽입한다.
+
+```java
+RequestDispatcher dispatcher = request.getRequestDispatcher("에러 URL 주소");
+dispatcher.forward(request,response);
+```
+
+**유효성 검사란?**
+사용자가 폼 페이지에서 입력한 데이터 값이 서버로 전송되기 전에 특정 규칙에 맞게 입력되었는지 검증하는 것
+부적합한 데이터를 입력하면 다시 폼 페이지로 되돌려 사용자에게 오류가 있음을 알려준다.
+
+ex) 폼 페이지에서 나이를 입력할 때 숫자를 인식하는 검사, 회원 가입시 아이디 중복 검사, 로그인 인증 시 아이디와 비밀번호 검사, IP 패킷 검사 등
+
+ex) 핸들러 함수 등록 예제
+
+```java
+<%@ page contentType="text/html; charset=utf-8"%>
+<html>
+<head>
+<title>Validation</title>
+</head>
+<script type="text/javascript">
+    function checkform(){
+        alert("아이디 : "+document.loginForm.id.value + "\n" + "비밀번호 : " + document.loginForm.passwd.value);
+    }
+</script>
+
+<body>
+    <form name="loginForm">
+        <p> 아이디: <input type="text" name="id">
+        <p> 비밀번호: <input type="password" name="passwd">
+        <p> <input type="submit" value="전송" onclick="checkform">
+</body>
 
 ```
 
-```java
+**유효성 검사 2가지**
+기본 유효성 검사: 데이터 값의 존재 유무 검사
+데이터 형식 유효성 검사: 데이터가 특정 패턴에 적합한지 검사
 
+```jsp
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Insert title here</title>
+<script>
+	function checkLogin() {
+		var form = document.loginForm;
+		if(form.id.value=="") {
+			alert("아이디를 입력해주세요");
+			form.id.focus();
+			return false;
+		} else if (form.passwd.value == "") {
+			alert("비밀번호를 입력해주세요");
+			form.passwd.focus();
+			return false;
+		}
+		form.submit();
+	}
+</script>
+</head>
+<body>
+	<form name="loginForm" action="validation02_process.jsp" method="post">
+		<p> 아이디 : <input type="text" name = "id"></p>
+		<p> 비밀번호 : <input type="password" name = "passwd"></p>
+		<p><input type="button" value="전송" onclick="checkLogin()"></p>
+	</form>
+</body>
+</html>
 ```
 
-```java
+**중요한 구문**
+form.passwd.value == ""
+alert("비밀번호를 입력해주세요");
+form.passwd.focus();
 
+## 유효성 검사 웹 마켓 부분 꼭 보기
+
+**JSTL이란?**
+JSP 표준 태그 라이브러리의 약어
+자신만의 태그를 추가할 수 있는 기능을 제공한다.
+
+ex) 사용자의 로케일에 따라 특정 날짜와 시간 형식을 표현하는 방법에 대해서 설명하세요.
+
+```jsp
+<%
+    Locale locale = request.getLocale();
+    String displayLanguage = locale.getDisplayLanguage();
+    String language = locale.getLanguage();
+    String displayCountry = locale.getDisplayCountry
+%>
 ```
 
-```java
-
-```
-
-```java
-
-```
-
-```java
-
-```
-
-```java
-
-```
-
-```java
-
-```
-
-```java
-
-```
-
-```java
-
-```
-
-```java
+```jsp
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ page import="java.text.NumberFormat" %>
+<%@page import="java.text.DateFormat"%>
+<%@ page import="java.util.*" %>
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<h3>현재 로케일의 국가, 날짜, 통화</h3>
+	<%
+		Locale locale = request.getLocale();
+		Date currentDate = new Date();
+		DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.FULL, locale);
+		NumberFormat numberFormat = NumberFormat.getNumberInstance(locale);
+	%>
+	<p> 국가 : <%=locale.getDisplayCountry() %></p>
+	<p> 날짜 : <%=dateFormat.format(currentDate) %></p>
+	<p> 숫자(12345.67) : <%=numberFormat.format(12345.67) %></p>
+</body>
+</html>
 
 ```
 
