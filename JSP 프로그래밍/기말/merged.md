@@ -136,7 +136,7 @@ close(): Statement 객체를 반환할 때 사용한다.
     pstmt.setString(1,"1")
     pstmt.executeUpdate()
     // 생략
-    pstmt.close(;)
+    pstmt.close();
 %>
 ```
 
@@ -218,6 +218,10 @@ finally{
 
 **RequestDispatcher 객체에 대해 설명하시오.**
 클라이언트로부터 최초에 들어온 요청을 JSP/Servlet 내에서 원하는 자원으로 요청을 넘기는 역할을 수행하거나, 특정 자원에 처리를 요청하고 처리 결과를 얻어 오는 기능을 수행하는 클래스
+
+사용법)
+RequestDispatcher dispatcher = request.getRequestDispatcher("error.jsp")
+dispatcher(request, response)
 
 **JSP 예외 처리 기법 3가지에 대해 설명하시오.**
 
@@ -358,8 +362,39 @@ ex) 사용자의 로케일에 따라 특정 날짜와 시간 형식을 표현하
 	<p> 숫자(12345.67) : <%=numberFormat.format(12345.67) %></p>
 </body>
 </html>
-
 ```
+
+**JSTL fmt 태그를 이용한 다국어 처리**
+<fmt:setLocale value="ko">
+<fmt:setLocale value="ja">
+
+<fmt:requestEncoding value="euc-kr">
+
+**선언적 시큐리티 처리**
+
+String user_id = (String) session.getAttribute("userID");
+String user_pw = (String) session.getAttribute("userPW");
+
+쿠키의 동작과정
+
+1. 쿠키 생성: 웹 서버에서 쿠키를 생성한다. 생성된 쿠키는 응답 데이터에 함께 저장되어 웹 브라우저에 전송된다.
+2. 쿠키 저장: 웹 브라우저는 응답 데이터에 포함된 쿠키를 쿠키 저장소에 보관한다.
+3. 쿠키 전송: 웹 브라우저는 한 번 저장된 쿠키를 요청이 있을 때마다 웹 서버에 전송한다. 웹 서버는 웹 브라우저가 전송한 쿠키를 사용하여 필요한 작업을 수행할 수 있다.
+
+<role rolename="tomcat"/>
+<role rolename="role1"/>
+<user username="tomcat" password="<must-be-changed>" roles="tomcat"/>
+<user username="both" password="<must-be-changed>" roles="tomcat, role1"/>
+<user username="role1" password="<must-be-changed>" roles="role1"/>
+<role rolename="manager"/>
+<user username="admin" password="admin1234" roles="manager">
+
+<security-role>
+    <role-name>역할 이름</role-name>
+</security-role>
+ddl create, altor, drop
+dml insert, select, delete
+dcl revoke, grant, commit, rollback
 
 ```java
 
