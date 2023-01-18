@@ -7,3 +7,6 @@ orthogonal 직교
 intrinsic 본질적인, 고유한
 extrinsic (무엇에 원래 속한 게 아니라) 외적인[외부의]
 in place of ~을 대신하여
+persistence 지속성
+advanced 고급의
+upstream 상위의
