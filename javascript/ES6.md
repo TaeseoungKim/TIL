@@ -240,3 +240,73 @@ for문, forEach는 **배열**에서만 사용이 가능하다.
 반면, for ... of은 배열, 객체, map, set 등 많은 iterable한 자료형에서 사용할 수 있다.
 또한, let과 const를 사용할 수 있는 것도 장점이다.
 또한, forEach와 비교해서 break문을 쓸 수 있는 것도 장점이다.
+
+## promise, async, await
+
+then이 promise가 resolve 되기를 기다리는 것처럼, await도 마찬가지
+
+## parallel await
+
+```javascript
+const getMoviesAsync = async () => {
+  const [firstPromiseValue, secondPromiseValue] = await Promise.all([
+    fetch("https://blah....1"),
+    fetch("https://blah....2"),
+  ]);
+
+  const [first, second] = await Promise.all([
+    firstPromiseValue.json(),
+    secondPromiseValue.json(),
+  ]);
+};
+```
+
+## class
+
+Class is bluePrint.
+객체에 대한 뼈대이다.
+
+## Set vs Map
+
+Set = 고유한 '값'들을 가진 자료형
+Map = '키'-'값' 쌍들을 가진 자료형
+
+## generators
+
+```javascript
+function* testGenerator() {
+  for (friend of friends) yield next;
+}
+
+const result = testGenerator();
+console.log(result.next); // 1 friend
+console.log(result.next); // 2 friend
+console.log(result.next); // 3 friend
+console.log(result.next); // 4 friend
+console.log(result.next); // 5 friend
+```
+
+## Proxy
+
+Proxy는 객체에 대한 이벤트를 가로챈다.
+예로, 아래는 객체에 대한 get과 set을 가로챈다.
+
+```javascript
+const userObj = {
+  username: "nico",
+  age: 12,
+  password: 1234,
+};
+
+const userFilter = {
+  get: () => {
+    return "nothing";
+  },
+
+  set: () => {
+    console.log("Somebody wrote something");
+  },
+};
+
+const filteredUser = new Proxy(userObj, userFilter);
+```
