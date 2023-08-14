@@ -98,7 +98,7 @@ function c() {
 function a() {}
 ```
 
-## lexical Scope
+# lexical Scope
 
 코드가 한번 실행되면, Scope Chain은 절대 바뀌지 않는다.
 이러한 환경을 lexical Scope라고 한다. (코드가 작성되었을 때의 환경)
@@ -184,7 +184,7 @@ new Human("TaeSeong"); // Human{name:"TaeSeong"}
 const obj = {
   name: "TaeSeong",
   sayName() {
-    console.log(this.name); // Taeseong
+    console.log(this.name); // TaeSeong
   },
   sayHello() => {
     console.log(`${this.name} says Hello`); // window, 화살표 함수는 영향을 받지 않는다.
@@ -203,45 +203,196 @@ Test(); // window
 
 ## 응용
 
+1번
+
 ```javascript
 const obj = {
   name: "TaeSeong",
   sayName() {
-    console.log(this.name); // Taeseong
-    innerSayName() => {
-    console.log(this.name); // Window
+    console.log(this.name); // (1) TaeSeong, 객체.메서드호출()형태 이므로 this는 객체를 가리킨다.
+    function innerSayName() {
+      console.log(this.name); // (2) Window, 그냥 함수이므로 window를 가리킨다.
+    }
+    innerSayName(); // (3) 이떄 (2)의 this가 결정된다!!
   },
-  },
-
 };
 
 obj.sayName();
-const Test = obj.sayName;
-Test(); // window
 ```
 
+2번
+
 ```javascript
+const obj = {
+  name: "TaeSeong",
+  sayName() {
+    console.log(this.name); // (1) TaeSeong, 객체.메서드호출()형태 이므로 this는 객체를 가리킨다.
+    const innerSayName = () => {
+      console.log(this.name); // (2) TaeSeong, innerSayName의 부모 스코프의 this를 가지므로!! (화살표 함수는 부모 스코프의 this를 물려받는다)
+    };
+    innerSayName(); // (3) 이떄 (2)의 this가 결정된다!!
+  },
+};
+
+obj.sayName();
+```
+
+3번, 2번 예제에서 아래 부분만을 가지고 각 this가 무엇인지 알 수 있을까?
+-> 알 수 없다. this는 호출할 때! 결정되기 때문
+
+```javascript
+  sayName() {
+    console.log(this.name);
+    const innerSayName = () => {
+      console.log(this.name);
+    };
+    innerSayName();
+  }
+```
+
+예시로, 아래와 같이 해버리면 this는 window를 가리킨다.
+
+```javascript
+const sayN = obj.sayName;
+sayN(); //
+```
+
+## bonus
+
+obj1.sayName과 obj2.sayName의 차이는?
+
+```javascript
+const obj1 = {
+  sayName() {
+    };
+};
+
+const obj2 = {
+  sayName: function () {
+    };
+};
 
 ```
 
-```javascript
+obj1의 경우, es6 이후 적용되는 축약형 메서드이다.
+축약형 메서드로 작성하면 프로퍼티 어트리뷰트인 [[constructor]]를 갖지 않는다.
 
+## addEventListener의 this
+
+버튼을 클릭하면 어떤 것이 출력될까?
+
+```javascript
+const header = document.querySelector(".button");
+header.addEventListener("click", function () {
+  console.log(this);
+});
 ```
 
-```javascript
+답은 button이 출력된다.
 
+function (){} 형태라서 window라고 생각할 수도 있지만,
+
+앞서 말했듯이 this는 호출될 때 결정된다. function (){}은 addEventListener 함수 내부안에서 실행되고, 그때의 this는 button이다. (이유는 모른다. addEventListener가 어떻게 생겼는지 모르기 때문에, addEventListener의 this가 엘리먼트를 가리킨다고 되어있다고 추측만 할 뿐)
+
+함수는 일급객체이다. 이런 경우, function () {} 형태의 콜백 함수를 넘겨주게 되면 this는 추측할 수 없다. (해당 함수 내부 구조를 모를 때,)
+하지만 이럴 때, () => {}과 같이 Arrow Function을 넘겨주면서 this 통제권을 가져올 수 있다.
+
+## bind, apply, call
+
+bind는 this만 바꿔서 새로운 함수를 만들어준다.
+apply와 call은 this를 바꾸고 실행까지 해준다. (bind는 생성만)
+apply와 call의 차이는 매개변수 할당 방식 (apply는 array, call은 순서 매개변수)
+
+# CallBack Function
+
+콜백 !== 비동기
+콜백 = 동기 콜백 || 비동기 콜백
+
+# Promise
+
+실행 됐는데, 결과값을 나중에 쓸 수 있는 것
+
+## 내 생각
+
+Promise를 '콜백의 진화' 버젼이라고 잘못 생각하는 경우가 많은데, Promise는 '콜백의 진화'가 아니다.
+콜백과 다르게 Promise의 가장 큰 장점은, '결과값을 나중에 쓸 수 있는 것'이다.
+Promise가 없었다면, 아래와 같이 '1초 뒤 무조건 실행되는' 콜백함수만 사용해야할 것 이다.
+
+```javascript
+setTimeout(() => {}, 1000);
 ```
 
-```javascript
+하지만 Promise를 사용한다면 아래와 같이 비동기 값을 '내가 사용하고 싶을 때' 사용할 수 있다.
 
+```javascript
+const promise = new Promise((resolve, reject) => {
+  setTimeout((결괏값) => {
+    resolve();
+  }, 1000);
+});
+
+딴짓();
+딴짓();
+딴짓();
+딴짓();
+
+promise.then(() => {
+  console.log("");
+});
 ```
 
-```javascript
+## 내 생각 22
 
+Async, Await의 단점을 보완하기 위해 Promise가 나왔다고 알려져있다.
+그래서 무조건 Async, Await > Promise라고 생각하는 경우가 많다. (나 또한..)
+하지만 Async, Await 조차, 앞서 말했던 '내가 사용하고 싶을 때' 사용할 수 있다는 Promise의 장점을 이기지 못한다.
+
+```javascript
+const p1 = axios.get("서버주소1");
+const p2 = axios.get("서버주소1");
+const p3 = axios.get("서버주소1");
+const p4 = axios.get("서버주소1");
+const p5 = axios.get("서버주소1");
+const p6 = axios.get("서버주소1");
+
+Promise.all([p1, p2, p3, p4, p5, p6]).then((result)=>());
 ```
 
-```javascript
+위 코드를 완전히 await으로 대체 사용한다면, 더욱 지저분할 것이다.
 
+## 내 생각33
+
+나는 무심코 'Promise = callBack Hell의 해결책'이 가장 큰 장점이라고 생각했는데,
+지금 생각해보면 Promise의 가장 큰 장점은 'callBack의 값을 바로 사용해야 하는 것에 대한 해결책' 일 수 있겠다.
+
+# async
+
+async 함수를 호출할 때는, 항상 then으로 리턴 값을 받아야한다.
+혹은 await
+
+```javascript
+async function main(){
+  const result = awiat promise;
+  return 'TaeSeong'
+}
+
+main().then((name)=>...)
+```
+
+## for await of
+
+노드 10부터 지원
+resolve된 프로미스가 변수에 담겨 나온다.
+
+```javascript
+const promise1 = Promise.resolve("sucess1");
+const promise2 = Promise.resolve("sucess2");
+
+async () => {
+  for await (promise of [primise1, primise2]) {
+    console.log(promise);
+  }
+}();
 ```
 
 ```javascript
