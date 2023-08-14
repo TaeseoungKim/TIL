@@ -358,12 +358,12 @@ const p6 = axios.get("서버주소1");
 Promise.all([p1, p2, p3, p4, p5, p6]).then((result)=>());
 ```
 
-위 코드를 완전히 await으로 대체 사용한다면, 더욱 지저분할 것이다.
+위 코드를 완전히 await으로 대체 사용한다면, 더욱 지저분할 것이다. (하나라도 실패시 catch로 넘어간다는 것이 문제는 Promise.allSettled()로 해결 가능)
 
 ## 내 생각33
 
 나는 무심코 'Promise = callBack Hell의 해결책'이 가장 큰 장점이라고 생각했는데,
-지금 생각해보면 Promise의 가장 큰 장점은 'callBack의 값을 바로 사용해야 하는 것에 대한 해결책' 일 수 있겠다.
+지금 생각해보면 Promise의 가장 큰 장점은 'callBack의 결괏값을 바로 사용해야 하는 것에 대한 해결책' 일 수 있겠다.
 
 # async
 
@@ -393,6 +393,62 @@ async () => {
     console.log(promise);
   }
 }();
+```
+
+```javascript
+
+```
+
+```javascript
+
+```
+
+```javascript
+
+```
+
+```javascript
+
+```
+
+```javascript
+
+```
+
+```javascript
+
+```
+
+```javascript
+
+```
+
+```javascript
+
+```
+
+```javascript
+
+```
+
+```javascript
+
+```
+
+```javascript
+
+```
+
+```javascript
+
+```
+
+```javascript
+
+```
+
+```javascript
+
 ```
 
 ```javascript
