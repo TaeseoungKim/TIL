@@ -395,9 +395,42 @@ async () => {
 }();
 ```
 
-```javascript
+# Macrotask, Microtask
 
+아래 코드를 실행해보면, 우리는 화면에 "code", "promise", "timeout" 순서로 출력되는 것을 볼 수 있다.
+이는 콜스택, 백그라운드, 매크로태스크, 마이크로태스크를 이해함으로써 순서를 이해할 수 있다.
+
+```javascript
+setTimeout(() => alert("timeout")); // 3
+
+Promise.resolve().then(() => alert("promise")); // 2
+
+alert("code"); // 1
 ```
+
+1. 콜스택은 비동기 함수를 백그라운드에 보낸다.
+2. 함수는 백그라운드에서 매크로태스크 또는 마이크로태스크로 할당된다. (어떤 함수인지에 따라)
+3. 마이크로태스크 큐를 모두 비우고 매크로태스크 큐를 모두 비운다. (비운다는 것은 콜스택으로 보낸다는 의미)
+
+자바스크립트 엔진은 크게 1, 2, 3의 동작을 반복하며 동작한다.
+
+## 매크로태스크 큐와 마이크로태스크 큐 함수
+
+### 콜백함수를 매크로태스크 큐에 넣는 함수
+
+- setTimeout
+- setInterval
+- setImmediate
+- requestAnimationFrame
+- I/O
+- - UI 렌더링
+
+### 콜백함수를 마이크로태스크 큐에 넣는 함수
+
+- process.nextTick
+- Promise
+- Object.observe
+- MutationObserver
 
 ```javascript
 

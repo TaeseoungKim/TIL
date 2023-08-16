@@ -310,3 +310,25 @@ const userFilter = {
 
 const filteredUser = new Proxy(userObj, userFilter);
 ```
+
+## import VS require
+
+1. require (JavaScript - CommonJS):
+   require는 주로 Node.js 환경에서 사용되는 CommonJS 모듈 시스템에서 사용되는 키워드이다. CommonJS는 서버 측 JavaScript 환경에서 모듈을 로딩하고 재사용하기 위한 표준이다.
+
+```javascript
+const module = require("module-name");
+```
+
+require는 '동기적'으로 작동하며, 모듈을 가져올 때 해당 모듈의 내용이 실행되고 그 결과가 할당된다.
+
+2. import (JavaScript - ES6 Modules):
+   import는 ECMAScript 6 (ES6) 이후의 JavaScript에서 사용되는 모듈 시스템이다. import를 사용하면 모듈을 '비동기적'으로 가져올 수 있고, '더 모듈화된 구조'를 제공한다.
+
+```javascript
+import module from "module-name";
+```
+
+import는 상대적으로 모던한 방식으로, '모듈의 내용이 필요한 시점에 가져와 사용한다. 브라우저에서도 점차 지원이 늘고 있다.
+
+요약하면, require는 주로 Node.js와 같은 CommonJS 환경에서 사용되며 동기적으로 작동하며, import는 ES6 모듈 시스템에서 사용되며 비동기적으로 작동하고 모던한 모듈화 접근 방식을 제공한다.
