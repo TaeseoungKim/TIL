@@ -546,36 +546,161 @@ p.then(() => {
 
 ## Promise -> Async, Await
 
+아래 Promise 코드를 Async, Await으로 변환해보자
+
 ```javascript
-
-new Promise((r,s)=>{
-  resolve(1)
-}).then(()=>)
-
+async function a() {
+  const a = await 1;
+  console.log("a", a);
+  console.log("hello");
+  await null;
+  const b = await Promise.resolve(1);
+  console.log("b", b);
+}
 ```
 
-```javascript
+답은 아래와 같다. (완전 동일하게 동작하는 것은 아니며, 개념 이해를 위해 추상적으로 변환한 것이다)
 
+```javascript
+Promise.resolve(1) // await 1을 처리하기 위해 Promise화를 시켜준다.
+  .then((a) => {
+    const a = 1;
+    console.log("a", a);
+    console.log("hello");
+    return null;
+  })
+  .then((result) => {
+    // result === null
+    return 1;
+  })
+  .then((b) => {
+    console.log("b: ", b);
+  });
 ```
 
-```javascript
+## 응용
 
+Async Function은 첫번째 Await을 만날 때 call Stack을 빠져나간다고 생각하면 편하다.
+(await을 만나는 순간, 비동기가 되어 백그라운드로 넘어가기 때문)
+
+아래 코드를 실행해보면 1, 2, 3, 4가 순서대로 출력될 것이다.
+await을 만나기 전까진 동기적으로 동작하기 떄문이다.
+
+```javascript
+async function a() {
+  console.log("2");
+  const a = await 1;
+  console.log("4");
+  await null;
+  const b = await Promise.resolve(1);
+  console.log("b", b);
+  return a + b;
+}
+
+console.log("1");
+a().then((result) => {
+  console.log(result); //  result === 2
+});
+console.log("3");
 ```
 
-```javascript
+마찬가지로 아래 Promise의 함수내부 부분은 동기적으로 동작한다.
 
+```javascript
+Promise((resolve,reject)=>{
+~함수내부~
+})
 ```
 
-```javascript
+## 무지성 await을 쓰지 말자.
 
+await을 쓸 때는 항상 await이 필요한 곳인지 고려를 해야한다.
+
+```javascript
+async function createPose() {
+  const post = await db.getPost(); // 게시물 조회
+  if (post) {
+    res.status(403).send("이미 게시글이 존재합니다.");
+  } else {
+    await db.createPost();
+
+    await db.userIncrementPoseCount(); // 사용자에 작성글 카운트 1 올림
+    await db.createNoti(); // 새로운 게시글 알림 등록
+  }
+}
 ```
 
-```javascript
+위 코드를 보면, 카운트 함수와 게시글 알림 함수는 같이 실행되어도 무방해 보인다.
+이럴때, await을 지우고 promise를 활용해야한다.
 
+```javascript
+async function createPose() {
+  const post = await db.getPost(); // 게시물 조회
+  if (post) {
+    res.status(403).send("이미 게시글이 존재합니다.");
+  } else {
+    await db.createPost();
+
+    const p1 = db.userIncrementPoseCount(); // 사용자에 작성글 카운트 1 올림
+    const p2 = db.createNoti(); // 새로운 게시글 알림 등록
+    await Promise.allSettled([p1, p2]);
+  }
+}
 ```
 
-```javascript
+tip)
+Promise에 map 메서드를 사용하면 비동기처럼 작동한다.
+동기처럼 사용하고 싶다면 for await을 사용한다
 
+```javascript
+const results = await Promise.all([p1, p2, p3]);
+results.map(async () => {
+  await result조작(); // p1, p2, p3 조작이 동시에 작동
+}, []);
+
+for (let let result of results){
+await result조작(); // p1, p2, p3 조작이 순서대로 작동
+}
+```
+
+# Closure
+
+클로저 정의
+
+- 클로저 는 함수와 함수가 선언된 어휘적 환경의 조합이다.
+- 클로저는 함수와 함수 외부 변수와의 관계이다.
+
+클로저는 스코프, 비동기, var(쓰레기 = 함수 스코프)등의 개념이 복합적으로 적용된 개념이다.
+for(반복문)과 비동기를 함께 사용하면 종종 발생한다.
+
+대표적인 예시는 아래와 같다.
+
+```javascript
+function a() {
+  for (var i = 0; i < 5; i++) {
+    setTimeout(() => {
+      console.log(i); // 모두 5가 찍힌다. var -> let으로 바꾸면 해결된다.
+    }, i * 1000);
+  }
+}
+
+a();
+```
+
+위 코드를 let을 쓰지 않고 0, 1, 2, 3, 4가 출력되도록 하려면, 아래와 같디 iffe를 사용하면 된다.
+
+```javascript
+function a() {
+  for (var i = 0; i < 5; i++) {
+    (function (j) {
+      setTimeout(() => {
+        console.log(j);
+      }, i * 1000);
+    })();
+  }
+}
+
+a();
 ```
 
 ```javascript

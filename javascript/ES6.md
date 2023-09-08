@@ -332,3 +332,59 @@ import module from "module-name";
 import는 상대적으로 모던한 방식으로, '모듈의 내용이 필요한 시점에 가져와 사용한다. 브라우저에서도 점차 지원이 늘고 있다.
 
 요약하면, require는 주로 Node.js와 같은 CommonJS 환경에서 사용되며 동기적으로 작동하며, import는 ES6 모듈 시스템에서 사용되며 비동기적으로 작동하고 모던한 모듈화 접근 방식을 제공한다.
+
+## ?? (널 병합 연산자)
+
+?? 연산자는 널 병합 연산자(nullish coalescing operator)로 알려져 있다.
+이 연산자는 주로 값이 null 또는 undefined인 경우에 대체값을 지정하는 데 사용된다.
+
+?? 연산자는 왼쪽 피연산자를 평가하고, 이 값이 null 또는 undefined인 경우에만 오른쪽 피연산자를 반환한다. 그렇지 않으면 왼쪽 피연산자의 값을 반환한다.
+
+```javascript
+var x = null;
+var y = "기본값";
+
+var result = x ?? y;
+console.log(result); // "기본값"
+```
+
+위의 코드에서 x 변수는 null이므로 ?? 연산자는 오른쪽 피연산자인 "기본값"을 반환한다.
+반면에, 만약 x 변수가 null이 아닌 값을 가지고 있다면
+
+```javascript
+Copy code
+var x = "다른 값";
+var y = "기본값";
+
+var result = x ?? y;
+console.log(result); // "다른 값"
+```
+
+이 경우에는 x 변수의 값이 반환된다. ?? 연산자는 null 또는 undefined만을 체크하며, 다른 falsy한 값들 (예: 빈 문자열, 숫자 0, false)은 해당 값 자체를 반환한다.
+
+### OR 연산자(||)
+
+널 병합 연산자(??)와 유사한 연산자로는 OR 연산자(||)가 있습니다. 이 두 연산자는 비슷한 상황에서 사용될 수 있지만 동작에 있어서 차이가 있다.
+널 병합 연산자 (??): 이 연산자는 null 또는 undefined인 경우에만 오른쪽 피연산자를 반환한다. 다른 falsy한 값(빈 문자열, 숫자 0, false)은 왼쪽 피연산자로 간주한다.
+
+```javascript
+Copy code
+var x = null;
+var y = "기본값";
+
+var result = x ?? y;
+console.log(result); // "기본값"
+```
+
+OR 연산자 (||): 이 연산자는 왼쪽 피연산자가 falsy한 값(예: null, undefined, 빈 문자열, 숫자 0, false)일 때 오른쪽 피연산자를 반환합니다. 그렇지 않으면 왼쪽 피연산자의 값을 반환합니다.
+
+```javascript
+Copy code
+var x = null;
+var y = "기본값";
+
+var result = x || y;
+console.log(result); // "기본값"
+```
+
+주요 차이점은 ?? 연산자가 명시적으로 null 또는 undefined 여부를 체크하는 반면, || 연산자는 falsy한 값 여부를 체크합니다. 따라서 || 연산자를 사용할 때는 주의해야 하며, 예기치 않은 동작을 방지하기 위해 명시적으로 ?? 연산자를 사용하는 것이 좋다.
