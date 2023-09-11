@@ -376,7 +376,7 @@ var result = x ?? y;
 console.log(result); // "기본값"
 ```
 
-OR 연산자 (||): 이 연산자는 왼쪽 피연산자가 falsy한 값(예: null, undefined, 빈 문자열, 숫자 0, false)일 때 오른쪽 피연산자를 반환합니다. 그렇지 않으면 왼쪽 피연산자의 값을 반환합니다.
+OR 연산자 (||): 이 연산자는 왼쪽 피연산자가 falsy한 값(예: null, undefined, 빈 문자열, 숫자 0, false)일 때 오른쪽 피연산자를 반환합니다. 그렇지 않으면 왼쪽 피연산자의 값을 반환한다.
 
 ```javascript
 Copy code
